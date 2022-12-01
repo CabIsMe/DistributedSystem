@@ -82,7 +82,7 @@ DATABASES = {
         "USER": "sa",
         "PASSWORD": "123",
         "HOST": "DESKTOP-LBSPM40\SQLEXPRESS",
-        "PORT": "",
+        "PORT": "1433",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
         },
     },
