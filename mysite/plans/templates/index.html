@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning</title>
+</head>
+<body>
+    <span>
+        <form method="GET">
+            <input value="Update now!" type="submit">
+        </form>
+        
+        <strong style="color: red;"> {{message}}  </strong>
+        
+    </span>
+    <table>
+        <thead>
+            <tr>
+                <td>Serial</td>
+                <td>Title</td>
+                <td>Content</td>
+                <td>Description</td>
+                <td>Time</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plan in plans %}
+            <tr>
+                <td></td>
+                <td>{{plan.plan_title}}</td>
+                <td>{{plan.plan_content}}</td>
+                <td>{{plan.plan_desc}}</td>
+                <td>{{plan.plan_time}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+<script>
+    serial=document.querySelectorAll('table tbody tr')
+    for(let i=1; i<=serial.length; i++){
+        document.querySelector('table tbody tr:nth-child('+i+') td:nth-child(1)').innerHTML=i
+    }
+</script>
+</html>
