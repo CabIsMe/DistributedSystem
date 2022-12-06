@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 
 
+
+
 def index(request):   
     plans=Plan.objects.using('default').all()
     for p in plans:
@@ -25,6 +27,21 @@ def create(request):
         plan = Plan(plan_id=planId ,plan_title=planTitle, plan_content=planContent, plan_desc=planDesc, plan_time=planTime)
         print(plan)
         plan.save(using='default')
-    return render(request, 'create.html')   
+    return render(request, 'create.html')  
+
+def edit(request, id):
+    plan=Plan.objects.get(id=id)
+    if request.method=='POST':
+        plan.plan_title=request.POST['planTitle']
+        plan.plan_content=request.POST['planContent']
+        plan.plan_desc=request.POST['planDescription']
+        plan.plan_time=request.POST['planTime']
+        plan.save()
+        return redirect('/plans')
+    return render(request, 'edit.html', {'plan':plan}) 
         
+def delete(request, id):
+    plan=Plan.objects.get(id=id)
+    plan.delete()
+    return redirect('/plans')
 

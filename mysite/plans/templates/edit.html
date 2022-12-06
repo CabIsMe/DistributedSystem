@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Plan</title>
+    <title>Edit Plan</title>
 </head>
 <body>
-    <h2>Create here</h2>
+    <h2>Edit here</h2>
     <form action="" method="POST">
         {% csrf_token %}
         <!-- <input type="text" name="planId" placeholder="id"> -->
-        <input type="text" name="planTitle" placeholder="Title">
-        <input type="text" name="planContent" placeholder="Content">
-        <input type="text" name="planDescription" placeholder="Description">
-        <input type="text" name="planTime" placeholder="Time">
-        <input type="submit" value="CREATE NOW">
+        <input type="text" name="planTitle" value="{{plan.plan_title}}">
+        <input type="text" name="planContent" value="{{plan.plan_content}}">
+        <input type="text" name="planDescription" value="{{plan.plan_desc}}">
+        <input type="text" name="planTime" value="{{plan.plan_time}}">
+        <input type="submit" value="SAVE CHANGE">
     </form>
     <div>
         <form method="GET" action="/plans">

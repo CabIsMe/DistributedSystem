@@ -28,6 +28,7 @@
                 <td>Content</td>
                 <td>Description</td>
                 <td>Time</td>
+                <td>Method</td>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +39,10 @@
                 <td>{{plan.plan_content}}</td>
                 <td>{{plan.plan_desc}}</td>
                 <td>{{plan.plan_time}}</td>
+                <td>
+                    <a href="/plans/edit/{{plan.id}}">Edit</a>
+                    <a href="/plans/delete/{{plan.id}}">Delete</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -49,5 +54,6 @@
     for(let i=1; i<=serial.length; i++){
         document.querySelector('table tbody tr:nth-child('+i+') td:nth-child(1)').innerHTML=i
     }
+
 </script>
 </html>
