@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+</head>
+<body> 
+    
+    <div class="wrapper">
+        <div class="table">
+            <ul class="row row-header">
+                <li class="grid-item">Serial</li>
+                <li class="grid-item">Title</li>
+                <li class="grid-item">Content</li>
+                <li class="grid-item">Description</li>
+                <li class="grid-item">Time</li>
+                <li class="grid-item">Actions</li>
+            </ul>
+
+            <div class="grid-container list-rows">
+                {% for plan in plans %}
+                <ul class="row">
+                    <li class="grid-item"></li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_title}}" readonly></li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_content}}" readonly></li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_desc}}" readonly></li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_time}}" readonly></li>
+                    <li class="grid-item">
+                        <div class="act-list">
+                            <button class="act-btn btn-edit">Edit</button> 
+                            <button class="act-btn btn-delete">Delete</button> 
+                            <button class="act-btn btn-save display-none">Save</button> 
+                            <button class="act-btn btn-ccl display-none">Cancel</button> 
+                        </div>
+                    </li>
+                </ul>
+                {% endfor %}
+
+                 
+            </div>
+        </div>
+
+        <section class="section-btn">
+            <!-- <div class="btn btn-update">Update</div> -->
+            <form method="GET" action="create">
+                <button class="btn btn-add display-none"><i class="fa-solid fa-floppy-disk"></i> Add</button>
+            </form>
+                
+            <button  class="btn btn-cancel display-none"><i class="fa-solid fa-xmark"></i> Cancel</button>
+            
+            <button  class="btn btn-create"><i class="fa-solid fa-plus"></i> Create</button>
+
+            <form method="GET">
+                <button class="btn btn-update"><i class="fa-solid fa-arrows-rotate"></i> Update</button>
+            </form>
+        </section>
+    </div>
+</body>
+
+<script>
+    let currentData = null;
+    let newRow = null;
+    let creatingFlag = false;
+
+    // Numbering order 
+    let listSerial = document.querySelectorAll('.list-rows .row')
+
+    for( let i = 0; i < listSerial.length; i++) { 
+        listSerial[i].firstElementChild.textContent = i + 1
+    }
+
+    // Handle EVENTs
+
+    let wrapper = document.querySelector('.wrapper')
+
+    wrapper.addEventListener('click', e => {
+        let target = e.target
+
+        if(target.closest('.btn-create')) {
+            creatingFlag = !creatingFlag
+            let listRowsElement = document.querySelector('.list-rows')
+            newRow = document.createElement('ul')
+            newRow.classList.add('row')
+
+            newRow.innerHTML = ` 
+                    <li class="grid-item">${listSerial.length+1}</li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_title}}" placeholder="Type the Title here..."></li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_content}}" placeholder="Type the Content here..."></li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_desc}}" placeholder="Type the Description here..." ></li>
+                    <li class="grid-item"><input type="text" value="{{plan.plan_time}}" placeholder="Type the Time here..."></li>
+                     
+                 `
+            
+            listRowsElement.appendChild(newRow)
+
+            // Display buttons
+            let listBtnElement = target.parentNode;
+            listBtnElement.querySelector('.btn-create').classList.add('display-none')
+            listBtnElement.querySelector('.btn-add').classList.remove('display-none')
+            listBtnElement.querySelector('.btn-cancel').classList.remove('display-none')
+
+        }
+
+        else if(target.closest('.btn-cancel')) {
+            creatingFlag = !creatingFlag
+            
+            let listRowsElement = document.querySelector('.list-rows')
+            listRowsElement.removeChild(newRow)
+            
+            // Display buttons
+            let listBtnElement = target.parentNode;
+            listBtnElement.querySelector('.btn-create').classList.remove('display-none')
+            listBtnElement.querySelector('.btn-add').classList.add('display-none')
+            listBtnElement.querySelector('.btn-cancel').classList.add('display-none')
+        }
+
+        else if(target.closest('.btn-edit') && !creatingFlag) {  
+
+            let row = target.parentNode.parentNode.parentNode 
+
+            let listInput = row.querySelectorAll('input')
+            currentData = []
+
+            for( let i = 0; i < listInput.length; i++) {
+                listInput[i].readOnly = false
+                currentData.push(listInput[i].value)
+                
+            }
+
+            // Display buttons
+            row.querySelector('.btn-edit').classList.add('display-none')
+            row.querySelector('.btn-delete').classList.add('display-none')
+            row.querySelector('.btn-save').classList.remove('display-none')
+            row.querySelector('.btn-ccl').classList.remove('display-none')
+        }
+
+        else if(target.closest('.btn-delete') && !creatingFlag) {
+
+        }
+
+        else if(target.closest('.btn-save')) {
+            // Handling EDIT data
+
+
+            // DONE 
+             document.querySelector('.btn-update').click()
+        }
+
+        else if(target.closest('.btn-ccl')) {
+            let row = target.parentNode.parentNode.parentNode 
+
+            let listInput = row.querySelectorAll('input')
+            for( let i = 0; i < listInput.length; i++) {
+                listInput[i].readOnly = true 
+                listInput[i].value = currentData[i]
+                
+            }
+
+            // Display buttons
+            row.querySelector('.btn-edit').classList.remove('display-none')
+            row.querySelector('.btn-delete').classList.remove('display-none')
+            row.querySelector('.btn-save').classList.add('display-none')
+            row.querySelector('.btn-ccl').classList.add('display-none')
+        }
+    })  
+</script>
+
+<style>
+
+    /* === === RESET CSS === === */
+
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    html,
+    button,
+    input {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+    }
+
+    ul,
+    ol,
+    li {
+        list-style: none;
+    }
+
+    button {
+        background: none;
+    }
+
+    /* === === BACKGROUND & WRAPPER === ===  */
+    /* wrapper contains the talbe & buttons */
+
+    body {
+        height: 100vh;
+        position: relative;
+
+        background-color: #4158D0;
+        background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    }
+
+    .wrapper {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        
+        width: 1200px;
+        height: 600px;
+        background-color: white;
+        box-shadow: 4px 4px 20px -8px #2c3e50;
+        
+        transform: translate( -50%, -50%);
+        border-radius: 6px;
+    }
+
+    /* ================= STYLE ROWS ================= */
+    
+    .list-rows {
+        height: 470px;
+        overflow-y: auto;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: 2fr 4fr 6fr 5fr 3fr 3fr;
+    }
+
+    .row:not(.row-header):hover {
+        background-color: #0093E9;
+        background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+        color: white;
+
+        transition: 0.2s;
+    }
+
+    .row-header {
+        background-color: #2c3e50;
+        color: white;
+        border-radius: 6px 6px 0 0;
+    }
+
+    .grid-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .row:nth-child(even) {
+        background-color: #ecf0f1;
+    }
+
+    .section-btn {
+        display: flex;
+        padding: 20px 24px;
+
+        position: absolute;
+        right: 0;
+        bottom: 0;
+
+    }
+
+    .act-list {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        width: 100%;
+    }
+
+    .act-btn {
+        cursor: pointer; 
+    }
+
+    .display-none {
+        display: none;
+    }
+
+    .row:hover input:read-only,
+    .row:hover .act-btn {
+        color: white;
+        transition: 0.2s;
+    }
+
+    .act-btn:hover {
+        color: tomato !important;
+    }
+
+    /* STYLE INPUT WHEN EDITINg AND ADDING */
+    .grid-item input {
+        width: 96%;
+        text-align: center;
+    }
+
+    .grid-item input:read-only {
+        border: none;
+        outline: none;
+        background: none;
+    }
+
+    /* === === STYLE BUTTONS === ===  */
+
+    .btn {
+        min-width: 120px;
+
+        margin-left: 12px;
+        padding: 12px 24px;
+        
+        background-color: #0093E9;
+        background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+        
+        color: white;
+        /* font-size: 16px; */
+        
+        transition: 0.3s;
+        
+        border-radius: 4px;
+        
+        cursor: pointer;
+
+    }
+
+    .btn-create {
+        background-color: #A9C9FF;
+        background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
+    }
+
+    .btn-add { 
+        background: none;
+        background-color: #1abc9c;
+    }
+
+    .btn-cancel {
+        background: none;
+        background-color: tomato;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+        box-shadow: 4px;
+    }
+
+    button {
+        outline: none;
+        border: none;
+    }
+</style>
+</html>

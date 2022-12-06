@@ -80,19 +80,24 @@ DATABASES = {
         "ENGINE": "mssql",
         "NAME": "Plans",
         "USER": "sa",
-        "PASSWORD": "123",
-        "HOST": "DESKTOP-LBSPM40\SQLEXPRESS",
-        "PORT": "",
+        "PASSWORD": "123456",
+        # 'HOST': '192.168.1.98',
+        'HOST': 'localhost\SQLEXPRESS',
+
+        "PORT": "1433",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
         },
+        
     },
     'write-only': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Plans',
-        'USER': 'postgres',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'mssql',
+        'NAME': 'pl2',
+        'USER': 'sa',
+        'PASSWORD': '123456', 
+        "HOST": "localhost\SQLEXPRESS",
+        'PORT': '1433',
+        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
+        },
     }
 }
 
