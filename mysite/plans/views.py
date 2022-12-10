@@ -3,19 +3,19 @@ from plans.models import Plan
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 
+from django.core import serializers
+from django.http.response import JsonResponse
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 7b2237670d971d3bf6d00258b72553219f1e465b
 def index(request):   
     plans=Plan.objects.using('default').all()
     for p in plans:
         p.save(using='write-only')
     mess='Updated!'
-    return render(request, 'index.html', {'plans':plans, "message": mess})
 
+    serialized_queryset = serializers.serialize('python', plans)
+    # return render(request, 'index.html', {'plans':plans, "message": mess})
+    return JsonResponse(serialized_queryset, safe=False) 
 
 @csrf_protect
 def create(request):

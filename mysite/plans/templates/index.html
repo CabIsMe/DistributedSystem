@@ -65,6 +65,8 @@
     </div>
 </body>
 
+
+<script src="./main.js"></script>
 <script>
     let currentData = null;
     let newRow = null;
@@ -75,6 +77,8 @@
 
     for( let i = 0; i < listSerial.length; i++) { 
         listSerial[i].firstElementChild.textContent = i + 1
+        listSerial[i].querySelector('.btn-edit').setAttribute('data-id', i+1);
+        listSerial[i].querySelector('.btn-delete').setAttribute('data-id', i+1);
     }
 
     // Handle EVENTs
@@ -123,7 +127,6 @@
         }
 
         else if(target.closest('.btn-edit') && !creatingFlag) {  
-
             let row = target.parentNode.parentNode.parentNode 
 
             let listInput = row.querySelectorAll('input')
@@ -140,6 +143,10 @@
             row.querySelector('.btn-delete').classList.add('display-none')
             row.querySelector('.btn-save').classList.remove('display-none')
             row.querySelector('.btn-ccl').classList.remove('display-none')
+
+            // Get ID
+            let id = row.querySelector('.btn-edit').getAttribute('data-id')
+            console.log(id)
         }
 
         else if(target.closest('.btn-delete') && !creatingFlag) {
