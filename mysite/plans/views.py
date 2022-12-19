@@ -11,20 +11,22 @@ def index(request):
     
     plans=Plan.objects.using('default').all()
 
-    if request.method == 'POST':
-        planId=plans.reverse()[0].plan_id+1
-        planTitle=request.POST['planTitle']
-        planContent=request.POST['planContent']
-        planDesc=request.POST['planDescription']
-        planTime=request.POST['planTime']
-        
-        plan = Plan(plan_id=planId ,plan_title=planTitle, plan_content=planContent, plan_desc=planDesc, plan_time=planTime)
-        print(plan)
-        plan.save(using='default')
-        return redirect('/plans')
-
     for p in plans:
         p.save(using='write-only')
+    
+    # if request.method == 'POST':
+    #     planId=plans.reverse()[0].plan_id+1
+    #     planTitle=request.POST['planTitle']
+    #     planContent=request.POST['planContent']
+    #     planDesc=request.POST['planDescription']
+    #     planTime=request.POST['planTime']
+        
+    #     plan = Plan(plan_id=planId ,plan_title=planTitle, plan_content=planContent, plan_desc=planDesc, plan_time=planTime)
+    #     print(plan)
+    #     plan.save(using='default')
+    #     return redirect('/plans')
+
+    
     mess='Updated!'
 
 
@@ -63,5 +65,9 @@ def edit(request, id):
 def delete(request, id):
     plan=Plan.objects.get(id=id)
     plan.delete()
+
+    plan2 = Plan.objects.using('write-only').get(id=id)
+    plan2.delete(using('write-only'))
+
     return redirect('/plans')
 

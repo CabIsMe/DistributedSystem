@@ -80,9 +80,9 @@ DATABASES = {
         "ENGINE": "mssql",
         "NAME": "Plans",
         "USER": "sa",
-        "PASSWORD": "123456",
-        # 'HOST': '192.168.1.98',
-        'HOST': 'localhost\SQLEXPRESS',
+        "PASSWORD": "123",
+        'HOST': '172.168.95.253',
+        # 'HOST': 'localhost\SQLEXPRESS',
 
         "PORT": "1433",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
@@ -91,7 +91,7 @@ DATABASES = {
     },
     'write-only': {
         'ENGINE': 'mssql',
-        'NAME': 'pl2',
+        'NAME': 'Plans',
         'USER': 'sa',
         'PASSWORD': '123456', 
         "HOST": "localhost\SQLEXPRESS",
